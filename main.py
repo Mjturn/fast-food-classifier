@@ -60,3 +60,15 @@ with open("model.pickle", "wb") as file:
 
 saved_model = open("model.pickle", "rb")
 model = pickle.load(saved_model)
+
+while True:
+    image_path = input("Enter the path to an image of a food.\n")
+    
+    if os.path.isfile(image_path):
+        break
+    
+image_array = cv2.imread(image_path)
+image_array = cv2.resize(image_array, (IMAGE_SIZE, IMAGE_SIZE))
+
+prediction = model.predict([image_array.reshape(-1, IMAGE_SIZE, IMAGE_SIZE, 3)])
+print(f"The food in the image you provided is/are (a) {FOODS[numpy.argmax(prediction, axis=1)[0]]}.")
